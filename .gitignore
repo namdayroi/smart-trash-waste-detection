@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Databases and logs
+*.db
+*.log
+
+# KiCad temporary and backup files
+*-backups/
+*.bak
+fp-info-cache
+
+# Arduino build folders
+build/
+*.local.properties

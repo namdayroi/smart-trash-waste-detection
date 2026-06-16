@@ -1,0 +1,17 @@
+{
+  "model_path": "D:/DATN/thubanmoi/FILE CODE/best14.pt",
+  "confidence_threshold": 0.8999999999999999,
+  "camera_stream_url": "http://192.168.3.112:81/stream",
+  "esp32_controller_url": "http://192.168.3.115",
+  "class_names": [
+    "Chai nước",
+    "Lon nước ngọt",
+    "Thuốc lá",
+    "Vỏ kẹo"
+  ],
+  "request_timeout": 15,
+  "auto_detect": true,
+  "health_check_interval": 10,
+  "firebase_url": "https://phan-loai-rac-thong-minh-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  "detection_cooldown": 3.0
+}

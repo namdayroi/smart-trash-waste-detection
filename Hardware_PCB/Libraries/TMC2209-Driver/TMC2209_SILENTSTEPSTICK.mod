@@ -1,0 +1,176 @@
+PCBNEW-LibModule-V1  
+# encoding utf-8
+Units mm
+$INDEX
+MODULE_TMC2209_SILENTSTEPSTICK
+$EndINDEX
+$MODULE MODULE_TMC2209_SILENTSTEPSTICK
+Po 0 0 0 15 00000000 00000000 ~~
+Li MODULE_TMC2209_SILENTSTEPSTICK
+Cd 
+Sc 00000000
+At STD
+Op 0 0 0
+.SolderMask 0
+.SolderPaste 0
+T0 -5.71 -11.155 1 1 0 0.05 N V 21 "MODULE_TMC2209_SILENTSTEPSTICK"
+T1 -4.825 11.115 1 1 0 0.05 N V 21 "VAL**"
+DS -7.62 10.16 -7.62 -10.16 0.127 21
+DS -7.62 -10.16 7.62 -10.16 0.127 21
+DS 7.62 -10.16 7.62 10.16 0.127 21
+DS 7.62 10.16 -7.62 10.16 0.127 21
+DS -7.62 10.16 -7.62 -10.16 0.127 27
+DS -7.62 -10.16 7.62 -10.16 0.127 27
+DS 7.62 10.16 -7.62 10.16 0.127 27
+DS 7.62 -10.16 7.62 10.16 0.127 27
+DS -7.87 10.41 -7.87 -10.41 0.05 26
+DS -7.87 -10.41 7.87 -10.41 0.05 26
+DS 7.87 -10.41 7.87 10.41 0.05 26
+DS 7.87 10.41 -7.87 10.41 0.05 26
+DC -8.2 -8.89 -8.1 -8.89 0.2 21
+DC -8.2 -8.89 -8.1 -8.89 0.2 27
+$PAD
+Sh "9" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 -8.89
+$EndPAD
+$PAD
+Sh "10" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 -6.35
+$EndPAD
+$PAD
+Sh "11" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 -3.81
+$EndPAD
+$PAD
+Sh "12" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 -1.27
+$EndPAD
+$PAD
+Sh "13" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 1.27
+$EndPAD
+$PAD
+Sh "14" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 3.81
+$EndPAD
+$PAD
+Sh "15" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 6.35
+$EndPAD
+$PAD
+Sh "16" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 8.89
+$EndPAD
+$PAD
+Sh "1" R 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 -8.89
+$EndPAD
+$PAD
+Sh "2" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 -6.35
+$EndPAD
+$PAD
+Sh "3" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 -3.81
+$EndPAD
+$PAD
+Sh "4" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 -1.27
+$EndPAD
+$PAD
+Sh "5" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 1.27
+$EndPAD
+$PAD
+Sh "6" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 3.81
+$EndPAD
+$PAD
+Sh "7" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 6.35
+$EndPAD
+$PAD
+Sh "8" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 8.89
+$EndPAD
+$PAD
+Sh "18" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 3.81 8.89
+$EndPAD
+$PAD
+Sh "17" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 1.27 8.89
+$EndPAD
+$EndMODULE MODULE_TMC2209_SILENTSTEPSTICK
