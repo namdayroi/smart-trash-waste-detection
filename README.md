@@ -11,9 +11,9 @@ Dự án được tổ chức một cách khoa học và tối ưu để quản 
 ```
 SmartTrashClassifier/
 ├── README.md                           # Hướng dẫn chi tiết cài đặt và vận hành hệ thống
+├── Images/                             # Tập hợp hình ảnh kết quả thực nghiệm, biểu đồ (tài liệu đồ án)
 ├── Documentation/                      # Báo cáo thuyết minh và tài liệu thiết kế đồ án
-│   ├── Graduation_Thesis.docx          # File báo cáo đồ án tốt nghiệp thuyết minh chi tiết
-│   └── Images/                         # Tập hợp hình ảnh kết quả thực nghiệm, biểu đồ
+│   └── Graduation_Thesis.docx          # File báo cáo đồ án tốt nghiệp thuyết minh chi tiết
 ├── Software_PC/                        # Phần mềm xử lý trung tâm và chạy AI trên máy tính
 │   ├── run_pc_app.py                   # Script ứng dụng chính (CustomTkinter GUI + YOLO Object Tracking)
 │   ├── config.json                     # File cấu hình kết nối, ngưỡng tin cậy AI, danh sách class rác
