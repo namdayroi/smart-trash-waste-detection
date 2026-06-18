@@ -18,7 +18,7 @@ import socket
 
 class Config:
     DEFAULTS = {
-        "model_path": "C:/Users/Namdr/Downloads/best.pt",
+        "model_path": "best.pt",
         "confidence_threshold": 0.8,
         "camera_stream_url": "http://192.168.1.4:8080",
         "esp32_controller_url": "http://192.168.151.229",
@@ -52,7 +52,11 @@ class Config:
             logging.error(f"Config save error: {e}")
 
     def __getitem__(self, key):
-        return self.data.get(key, self.DEFAULTS.get(key))
+        val = self.data.get(key, self.DEFAULTS.get(key))
+        if key == "model_path" and val and not os.path.isabs(val):
+            # Resolve relative to config.json directory
+            return os.path.abspath(os.path.join(os.path.dirname(self.path), val))
+        return val
 
     def __setitem__(self, key, value):
         self.data[key] = value
@@ -143,7 +147,7 @@ class VideoStream:
         fc, ft = 0, time.time()
         reconnect_wait = 1
         while self._running:
-            if self._cap is None or not self._cap.isOpened():
+            if self._cap is None:
                 self.connected = False
                 try:
                     self._cap = cv2.VideoCapture(self.url)
@@ -151,17 +155,28 @@ class VideoStream:
                         self.connected = True
                         reconnect_wait = 1
                     else:
+                        self._cap = None
                         time.sleep(reconnect_wait)
                         reconnect_wait = min(reconnect_wait * 2, 10)
                         continue
                 except Exception:
+                    self._cap = None
                     time.sleep(reconnect_wait)
                     reconnect_wait = min(reconnect_wait * 2, 10)
                     continue
 
-            ret, frame = self._cap.read()
+            try:
+                ret, frame = self._cap.read()
+            except Exception:
+                ret = False
+
             if not ret:
                 self.connected = False
+                if self._cap:
+                    try:
+                        self._cap.release()
+                    except Exception:
+                        pass
                 self._cap = None
                 continue
 
@@ -174,15 +189,21 @@ class VideoStream:
                 self.fps = fc / elapsed
                 fc, ft = 0, time.time()
 
+        # Clean up on exit
+        if self._cap:
+            try:
+                self._cap.release()
+            except Exception:
+                pass
+            self._cap = None
+        self.connected = False
+
     def get_frame(self):
         with self._lock:
             return self._frame.copy() if self._frame is not None else None
 
     def stop(self):
         self._running = False
-        if self._cap:
-            self._cap.release()
-            self._cap = None
 
 class TrashClassifierApp(ctk.CTk):
 
@@ -210,6 +231,7 @@ class TrashClassifierApp(ctk.CTk):
         self._log_q: Queue = Queue()
         self._http_queue: Queue = Queue() 
         self.tracked_ids = set() 
+        self.db_lock = threading.Lock()
 
        
         self._setup_db()
@@ -235,7 +257,7 @@ class TrashClassifierApp(ctk.CTk):
             self._log("", "Khởi động Radar Quét IP Tự Động (UDP 8888)...", Theme.INFO)
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            sock.settimeout(3.0)
+            sock.settimeout(1.0)
             
             found_cam = False
             found_ctrl = False
@@ -267,7 +289,7 @@ class TrashClassifierApp(ctk.CTk):
                             self._log("", f"Đã tự động tìm thấy Điều khiển tại {ip}", Theme.SUCCESS)
                             found_ctrl = True
                     except socket.timeout:
-                        break
+                        continue
             except Exception as e:
                 self._log("", f"Lỗi quét UDP: {e}", Theme.DANGER)
             finally:
@@ -282,20 +304,21 @@ class TrashClassifierApp(ctk.CTk):
         db_path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "stats.db")
         self.conn = sqlite3.connect(db_path, check_same_thread=False)
         self.cursor = self.conn.cursor()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS sort_log 
-                               (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                                class_id INTEGER, class_name TEXT, 
-                                conf REAL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
-        self.conn.commit()
-        
         try:
-            self.cursor.execute("SELECT class_id, COUNT(*) FROM sort_log GROUP BY class_id")
-            for row in self.cursor.fetchall():
+            with self.db_lock:
+                self.cursor.execute('''CREATE TABLE IF NOT EXISTS sort_log 
+                                       (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                                        class_id INTEGER, class_name TEXT, 
+                                        conf REAL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
+                self.conn.commit()
+                self.cursor.execute("SELECT class_id, COUNT(*) FROM sort_log GROUP BY class_id")
+                rows = self.cursor.fetchall()
+            for row in rows:
                 self.stats[row[0]] = row[1]
                 self.total += row[1]
             self.after(1000, self._refresh_stats)
         except Exception as e:
-            self._log("", f"Lỗi đọc DB: {e}", Theme.DANGER)
+            self._log("", f"Lỗi đọc/khởi tạo DB: {e}", Theme.DANGER)
 
     def _setup_logging(self):
         log_file = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "system.log")
@@ -698,8 +721,9 @@ class TrashClassifierApp(ctk.CTk):
                     
                     # Lưu vào SQLite Database
                     try:
-                        self.cursor.execute("INSERT INTO sort_log (class_id, class_name, conf) VALUES (?, ?, ?)", (cid, cname, conf))
-                        self.conn.commit()
+                        with self.db_lock:
+                            self.cursor.execute("INSERT INTO sort_log (class_id, class_name, conf) VALUES (?, ?, ?)", (cid, cname, conf))
+                            self.conn.commit()
                     except Exception as db_e:
                         self._log(f"Lỗi lưu Database: {db_e}", Theme.DANGER)
 
@@ -828,8 +852,9 @@ class TrashClassifierApp(ctk.CTk):
             self.tracked_ids.clear()
             
         try:
-            self.cursor.execute("DELETE FROM sort_log")
-            self.conn.commit()
+            with self.db_lock:
+                self.cursor.execute("DELETE FROM sort_log")
+                self.conn.commit()
             self._log( "Đã xóa lịch sử trong Database.", Theme.INFO)
         except Exception as db_e:
             self._log(f"Lỗi xóa Database: {db_e}", Theme.DANGER)
@@ -848,7 +873,9 @@ class TrashClassifierApp(ctk.CTk):
         self.cfg["confidence_threshold"] = self.slider.get()
         self.cfg["auto_detect"] = self.var_auto.get()
         self.cfg.save()
-        if hasattr(self, 'conn'): self.conn.close()
+        if hasattr(self, 'conn'):
+            with self.db_lock:
+                self.conn.close()
         self.destroy()
 
 if __name__ == "__main__":

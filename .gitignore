@@ -1,0 +1,33 @@
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+ENV/
+.env
+
+# Local runtime database and logs
+Software_PC/stats.db
+Software_PC/system.log
+*.db
+*.log
+
+# KiCad hardware design artifacts (temp/backups/local settings)
+Hardware_PCB/fp-info-cache
+Hardware_PCB/THUNGRAC_AI_CAM-backups/
+Hardware_PCB/*.kicad_prl
+Hardware_PCB/*.sch-bak
+Hardware_PCB/*-bak
+*.sch-bak
+*.kicad_prl
+fp-info-cache
+*-backups/
+
+# Operating System and IDE settings
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini

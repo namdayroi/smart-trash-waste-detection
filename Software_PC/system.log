@@ -1,5 +1,0 @@
-2026-06-16 22:29:36,963 [INFO] #10b981
-2026-06-16 22:29:36,964 [INFO] Khởi động Radar Quét IP Tự Động (UDP 8888)...
-2026-06-16 22:29:38,274 [INFO] Lỗi tải model: [Errno 2] No such file or directory: 'D:\\DATN\\thubanmoi\\FILE CODE\\best14.pt'
-2026-06-16 22:29:39,973 [INFO] Không tìm thiết bị mới nào, dùng IP cũ.
-2026-06-16 22:29:44,813 [INFO] #10b981

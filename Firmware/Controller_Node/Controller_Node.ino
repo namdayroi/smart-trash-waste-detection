@@ -330,9 +330,10 @@ void processStateMachine() {
         myServo.write(servoAngle);
         stateTimer = millis();
         if (servoAngle <= SERVO_CLOSED) {
-  currentState = STATE_SORT_FINISHING;
- }
-}
+          stepper.moveTo(0); // Quay khay về vị trí đón rác ban đầu (góc 0)
+          currentState = STATE_SORT_FINISHING;
+        }
+      }
       break;
 
     case STATE_SORT_FINISHING:
@@ -391,11 +392,8 @@ void setup() {
   Serial.println("[HOME] Dang tim diem goc...");
   enableStepper(true);
   stepper.setSpeed(500);
-  
-enableStepper(true);
-stepper.setSpeed(500);
 
-unsigned long timeout = millis() + 15000;
+  unsigned long timeout = millis() + 15000;
 bool homingOk = false;
 
 while (millis() < timeout) {
